@@ -15,30 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="F:\tiger\chap1\main.c">
+    <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="F:\tiger\chap1\prog1.c">
+    <ClCompile Include="prog1.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="F:\tiger\chap1\slp.c">
+    <ClCompile Include="slp.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="F:\tiger\chap1\util.c">
+    <ClCompile Include="util.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="F:\tiger\chap1\makefile" />
+    <None Include="makefile" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="F:\tiger\chap1\prog1.h">
+    <ClInclude Include="prog1.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="F:\tiger\chap1\slp.h">
+    <ClInclude Include="slp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="F:\tiger\chap1\util.h">
+    <ClInclude Include="util.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
