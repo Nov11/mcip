@@ -61,4 +61,5 @@ int maxargs(A_stm stm) {
 int main() {
 	A_stm stm = prog();
 	printf("maxargs:%d\n", maxargs(stm));
+	return 0;
 }
