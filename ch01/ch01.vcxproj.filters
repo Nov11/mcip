@@ -30,6 +30,9 @@
     <ClCompile Include="maxargs.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="interp.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />
@@ -45,6 +48,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="maxargs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="interp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

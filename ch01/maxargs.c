@@ -11,6 +11,7 @@ int maxargsExp(A_exp exp) {
 	case A_eseqExp:
 		return maxargsImpl(exp->u.eseq.stm);
 	}
+	return 0;
 }
 int maxargsExpList(A_expList expl) {
 	if (expl == NULL) { return 0; }
@@ -24,6 +25,7 @@ int maxargsExpList(A_expList expl) {
 	case A_lastExpList:
 		return 1;
 	}
+	return 0;
 }
 
 int maxargsImpl(A_stm stm) {
@@ -50,6 +52,7 @@ int maxargsImpl(A_stm stm) {
 	}
 	}
 	//return max;
+	return 0;
 }
 
 int maxargs(A_stm stm) {

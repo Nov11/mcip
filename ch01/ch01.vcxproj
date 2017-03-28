@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="interp.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="maxargs.c" />
     <ClCompile Include="prog1.c" />
@@ -29,6 +30,7 @@
     <None Include="makefile" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="interp.h" />
     <ClInclude Include="maxargs.h" />
     <ClInclude Include="prog1.h" />
     <ClInclude Include="slp.h" />
