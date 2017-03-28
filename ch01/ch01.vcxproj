@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="maxargs.c" />
     <ClCompile Include="prog1.c" />
     <ClCompile Include="slp.c" />
     <ClCompile Include="util.c" />
@@ -28,6 +29,7 @@
     <None Include="makefile" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="maxargs.h" />
     <ClInclude Include="prog1.h" />
     <ClInclude Include="slp.h" />
     <ClInclude Include="util.h" />
