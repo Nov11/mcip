@@ -20,6 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cr.lex" />
+    <None Include="runtest.sh" />
+    <None Include="test1" />
+    <None Include="test2" />
+    <None Include="test3" />
+    <None Include="teststr1" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util.c" />
