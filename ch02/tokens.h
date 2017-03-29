@@ -52,3 +52,17 @@ extern YYSTYPE yylval;
 # define VAR 298
 # define TYPE 299
 
+/*
+
+
+"\\t"    printf("tab\n");
+\n    printf("newline\n");
+"\\^"[a-z] printf("3rd\n");
+\\[0-9]{3} printf("number\n");
+\"     printf("double qoute\n");
+\\\\    printf("double slash\n");
+"\\n" printf("slash n\n");
+\\f___f\\ printf("ff\n");
+
+
+*/

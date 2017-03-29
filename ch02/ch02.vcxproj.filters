@@ -24,6 +24,9 @@
     <ClCompile Include="util.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lex.yy.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errormsg.h">

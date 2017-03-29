@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "util.h"
 #include "errormsg.h"
 void *checked_malloc(int len)
@@ -28,56 +29,83 @@ string StringTrimDoubleQoute(char *s)
 {
 	//extract double qoute in the beginning and in the end
 	int len = strlen(s) + 1 - 2;
-	string p = checked_malloc(len);
+	string p = checked_malloc(len);//this will waste some memory¡£ or we need iterate through 's' again¡£
 	string ptr = p;
 	string start = &s[1];
-	for (int i = 0; i < len - 1; ) {
-		char c = start[i];
+	int charLen = len - 1;//1 for terminate NULL
+
+	for (int i = 0; i < charLen; ) {
+		char fst = start[i];
 		//first back slash
-		if (c == '\\') {
+		if (fst != '\\') {
+			*ptr++ = fst;
+			i++;
+		}
+		else {
+			//c is back slash
 			//if this is not the last charactor
-			if (i + 1 < len - 1) {
-				char tmp = start[i + 1];
-				if (tmp == 'n') {
-					*ptr++ = '\n';
-					i += 2;
-				}
-				else if (tmp == 't') {
-					*ptr++ = '\t';
-					i += 2;
-				}
-				else if (tmp == '\\') {
-					*ptr++ = '\\';
-					i += 2;
-					if (i < len - 1 && isdigit(start[i])) {
-						//there should be three digits
-						char* inner = &start[i];
-						if (i + 2 < len - 1 && isdigit(*inner) && isdigit(*(inner + 1)) && isdigit(*(inner + 2))) {
-							*ptr++ = (*inner) * 8 * 8 + (*(inner + 1)) * 8 + (*(inner + 2));
+			//possible literals are \\n \\t \" \\124 \\
+						//which means double qoute or back slash exists after the first back slash
+			if (i + 1 < charLen) {
+				char snd = start[i + 1];
+				if (snd == '\\') {
+					//*ptr++ = '\\';
+					//i += 2;
+					//if (i < len - 1 && isdigit(start[i])) {
+					//	//there should be three digits
+					//	char* inner = &start[i];
+					//	if (i + 2 < len - 1 && isdigit(*inner) && isdigit(*(inner + 1)) && isdigit(*(inner + 2))) {
+					//		*ptr++ = (*inner) * 8 * 8 + (*(inner + 1)) * 8 + (*(inner + 2));
+					//		i += 3;
+					//	}
+					//	else {
+					//		printf("illegal token.there should be three digits here.");
+					//	}
+					//}
+					if (i + 2 < charLen) {
+						char trd = start[i + 2];
+						if (trd == 'n') {
+							*ptr++ = '\n';
+							i += 3;
+						}
+						else if (trd == 't') {
+							*ptr++ = '\t';
 							i += 3;
 						}
 						else {
-							EM_error(EM_tokPos, "illegal token.there should be three digits here.");
+							//just double back slash
+							*ptr++ = '\\';
+							i += 2;
 						}
 					}
+					else {
+						// double back slash in the end of string
+						// that is single slash in the result
+						*ptr++ = '\\';
+						i += 2;
+					}
+
 				}
-				else if (tmp == '\"') {
+				else if (snd == '\"') {
 					*ptr++ = '\"';
 					i += 2;
 				}
 				else
 				{
 					printf("what is \\^[a-z] or \\f___f\\ ?\n");
+					exit(1);
 				}
+			}
+			else {
+				//there should not be any case that single back slash occours in string literal
+				printf("singe back slash occurs in string literal\n");
+				exit(1);
 			}
 			// deal with back slash end
 		}
-		else {
-			*ptr++ = start[i];
-			i++;
-		}
 	}
-	*ptr = NULL;
+	//terminate the string with NULL
+	*ptr = 0;
 	return p;
 }
 
@@ -87,33 +115,4 @@ U_boolList U_BoolList(bool head, U_boolList tail)
 	list->head = head;
 	list->tail = tail;
 	return list;
-}
-
-void comment()
-{
-	int commentBegin = 1;
-	do {
-		//find first start
-		char c1 = fgetc(yyin);
-		char c0 = 255;
-		while (c1 != EOF && c1 != "*") {
-			c0 = c1;
-			c1 = fgetc(yyin);
-		}
-		if (c1 == EOF) {
-			EM_error(EM_tokPos, "comment not terminated");
-			return;
-		}
-		//if we encountered nested comment
-		if (c0 == '/') {
-			commentBegin++;
-			continue;
-		}
-		char lookAhead = fgetc(yyin);
-		if (lookAhead != '/') {
-			continue;
-		}
-		commentBegin--;
-	} while (commentBegin > 0);
-
 }

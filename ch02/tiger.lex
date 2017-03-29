@@ -25,11 +25,11 @@ char [a-zA-Z]
 num [0-9]
 blank [ \t\n]
 allprintable [`~!@#$%^&*()_+\-={}|\[\]\\:";'<>?,./"]
-printable [`~!@#$%^&*()_+\-={}|\[\]:";'<>?,./"]
- //what is \^a ?
-allow "\n" | "\t" | "\^"[a-z] | "\\"[0-9]{3} | "\"" | "\\\\" | "\\f___f\\"
+printableInDoubleQoute [`~!@#$%^&*()_+\-={}|\[\]:;'<>?,./]
+ //what is \^a ? what is \f___f\ ?
+allow ("\\n"|"\\t"|\\^[a-z]|\\[0-9]{3}|\\\"|\\\\|\\f___f\\)
 
-str \"({printable|allow|blank|char|num)*\"
+str1 \"({allow}|{blank}|{printableInDoubleQoute}|{char}|{num})*\"
 %%
 "while" {adjust();return WHILE;}
 "for" {adjust();return FOR;}
@@ -50,7 +50,7 @@ str \"({printable|allow|blank|char|num)*\"
 "nil" {adjust();return NIL;}
 
 
-" "	 {adjust(); continue;}
+[ \t] {adjust(); continue;}
 \n	 {adjust(); EM_newline(); continue;}
 ","	 {adjust(); return COMMA;}
 ":" {adjust(); return COLON;}
@@ -75,10 +75,39 @@ str \"({printable|allow|blank|char|num)*\"
 "&" {adjust(); return AND;}
 "|" {adjust(); return OR;}
 ":=" {adjust(); return ASSIGN;}
-[1-9][0-9]*	 {adjust(); yylval.ival=atoi(yytext); return INT;}
+([1-9][0-9]*|0)	 {adjust(); yylval.ival=atoi(yytext); return INT;}
 [a-zA-Z][_a-zA-Z0-9]*	{adjust();yylval.sval=String(yytext);return ID;}
-{str} {adjust();yylval.sval = StringTrimDoubleQoute(yytext); return STRING;}
+{str1}  {adjust();yylval.sval = StringTrimDoubleQoute(yytext); return STRING;}
+
 "/*"  {adjust();comment();}
 .	 {adjust(); EM_error(EM_tokPos,"illegal token");}
+%%
 
+void comment()
+{
+	int commentBegin = 1;
+	do {
+		//find first start
+		char c1 = input();
+		char c0 = 255;
+		while (c1 != 0 && c1 != '*') {
+			c0 = c1;
+			c1 = input();
+		}
+		if (c1 == 0) {
+			printf("comment not terminated\n");
+			return;
+		}
+		//if we encountered nested comment
+		if (c0 == '/') {
+			commentBegin++;
+			continue;
+		}
+		char lookAhead = input();
+		if (lookAhead != '/') {
+			continue;
+		}
+		commentBegin--;
+	} while (commentBegin > 0);
 
+}
